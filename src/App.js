@@ -140,12 +140,13 @@ class App extends Component {
   }
 
   drawSkier = () => {
+    console.log('draw skier......')
     const skierImage = this.refs[this.getSkierAssetName()]
-    const x = (this.state.width / 2 - skierImage.width) / 2
-    const y = (this.state.height / 2 - skierImage.height) / 2
-
-    console.log('draw skier.... ')
     console.log('skierImage: ', skierImage)
+    const x = (this.state.width - skierImage.width) / 2
+    const y = (this.state.height - skierImage.height) / 2
+    console.log('x: ', x)
+    console.log('y: ', y)
     this.ctx.drawImage(skierImage, x, y, skierImage.width, skierImage.height)
   }
 
@@ -287,19 +288,20 @@ class App extends Component {
     console.log('gameLoop....')
     this.ctx.save()
     // Retina support
-    this.ctx.scale(window.devicePixelRatio, window.devicePixelRatio)
-    // this.clearCanvas()
+    // this.ctx.scale(window.devicePixelRatio, window.devicePixelRatio)
+    this.clearCanvas()
     // this.moveSkier()
     // this.checkIfSkierHitObstacle()
     this.drawSkier()
     // this.drawObstacles()
     // this.ctx.restore()
+    debugger
     requestAnimationFrame(this.gameLoop)
   }
 
   render() {
-    const canvasWidth = this.state.width * window.devicePixelRatio
-    const canvasHeight = this.state.height * window.devicePixelRatio
+    const canvasWidth = this.state.width
+    const canvasHeight = this.state.height
     return (
       <div className="App">
         <button onClick={this.startGame}>Start</button>
