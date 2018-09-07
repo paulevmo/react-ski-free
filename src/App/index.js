@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
 import { default as _ } from 'lodash'
-import './App.css';
+import '../App.css';
 
-import skierCrash from './img/skier_crash.png'
-import skierLeft from './img/skier_left.png'
-import skierLeftDown from './img/skier_left_down.png'
-import skierDown from './img/skier_down.png'
-import skierRightDown from './img/skier_right_down.png'
-import skierRight from './img/skier_right.png'
-import tree from './img/tree_1.png'
-import treeCluster from './img/tree_cluster.png'
-import rock1 from './img/rock_1.png'
-import rock2 from './img/rock_2.png'
+import skierCrash from '../img/skier_crash.png'
+import skierLeft from '../img/skier_left.png'
+import skierLeftDown from '../img/skier_left_down.png'
+import skierDown from '../img/skier_down.png'
+import skierRightDown from '../img/skier_right_down.png'
+import skierRight from '../img/skier_right.png'
+import tree from '../img/tree_1.png'
+import treeCluster from '../img/tree_cluster.png'
+import rock1 from '../img/rock_1.png'
+import rock2 from '../img/rock_2.png'
 
 const obstacleTypes = [
   'tree',
