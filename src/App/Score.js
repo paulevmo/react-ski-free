@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 
 const Scoreboard = styled.div`
+  margin: 20px;
   width: 300px;
   color: #494949;
   background: #ffffff;

@@ -21,7 +21,9 @@ import Score from './Score'
 
 const StartButton = styled.button`
   width: 200px;
-  margin-top: ${(props) => props.windowHeight / 2}px;
+  position: absolute;
+  top: ${(props) => props.windowHeight / 2 - 100}px;
+  left: ${(props) => props.windowWidth / 2 - 100}px;
   color: #494949;
   background: #ffffff;
   padding: 20px;
@@ -42,7 +44,7 @@ class App extends Component {
   state = {
     width: null,
     height: null,
-    gameStatus: 'NEW',
+    gameStatus: 'START GAME',
     score: 0
   }
 
@@ -76,18 +78,24 @@ class App extends Component {
   }
 
   startGame = () => {
+    this.reset()
     this.Obstacle.placeInitial(this.refs, this.state.width, this.state.height)
     requestAnimationFrame(this.gameLoop)
-    this.setState({ gameStatus: 'PLAYING' })
+    this.setState({ gameStatus: 'PLAYING', score: 0 })
+  }
+
+  reset = () => {
+    cancelAnimationFrame(this.animationId)
+    this.Skier = new Skier()
+    this.Obstacle = new Obstacle()
   }
 
   addToScore = (newPoints) => {
-    console.log('adding to score.... newPoints: ', newPoints)
-    console.log(this.state.score + newPoints)
     this.setState({score: this.state.score + newPoints})
   }
 
   handleUserInput = (e) => {
+    if (this.state.gameStatus !== 'TRY AGAIN')
     switch (e.which) {
       case 37:
         if(this.Skier.direction === 1) {
@@ -150,7 +158,10 @@ class App extends Component {
       return this.intersectRect(skierRect, obstacleRect)
     })
 
-    if(collision) this.Skier.direction = 0
+    if (collision) {
+      this.Skier.direction = 0
+      this.setState({ gameStatus: 'TRY AGAIN' })
+    }
   }
 
   intersectRect = (r1, r2) => {
@@ -168,7 +179,7 @@ class App extends Component {
     this.Skier.draw(this.refs, this.ctx, this.state.width, this.state.height)
     this.Obstacle.draw(this.refs, this.ctx, this.Skier.x, this.Skier.y, this.state.width, this.state.height)
     this.ctx.restore()
-    requestAnimationFrame(this.gameLoop)
+    this.animationId = requestAnimationFrame(this.gameLoop)
   }
 
   render() {
@@ -177,21 +188,21 @@ class App extends Component {
     return (
       <div className="App">
         {
-          this.state.gameStatus === 'NEW'
-          ? <StartButton windowHeight={canvasHeight} onClick={this.startGame}>START</StartButton>
+          this.state.gameStatus !== 'PLAYING'
+          ? <StartButton windowHeight={canvasHeight} windowWidth={canvasWidth} onClick={this.startGame}>{this.state.gameStatus}</StartButton>
           : <Score currentScore={this.state.score} />
         }
         <canvas ref={this.canvasRef} width={canvasWidth} height={canvasHeight} />
-        <img ref='skierCrash' src={skierCrash} alt='' />
-        <img ref='skierLeft' src={skierLeft} alt='' />
-        <img ref='skierLeftDown' src={skierLeftDown} alt='' />
-        <img ref='skierDown' src={skierDown} alt='' />
-        <img ref='skierRightDown' src={skierRightDown} alt='' />
-        <img ref='skierRight' src={skierRight} alt='' />
-        <img ref='tree' src={tree} alt='' />
-        <img ref='treeCluster' src={treeCluster} alt='' />
-        <img ref='rock1' src={rock1} alt='' />
-        <img ref='rock2' src={rock2} alt='' />
+        <img ref='skierCrash' className='hidden' src={skierCrash} alt='' />
+        <img ref='skierLeft' className='hidden' src={skierLeft} alt='' />
+        <img ref='skierLeftDown' className='hidden' src={skierLeftDown} alt='' />
+        <img ref='skierDown' className='hidden' src={skierDown} alt='' />
+        <img ref='skierRightDown' className='hidden' src={skierRightDown} alt='' />
+        <img ref='skierRight' className='hidden' src={skierRight} alt='' />
+        <img ref='tree' className='hidden' src={tree} alt='' />
+        <img ref='treeCluster' className='hidden' src={treeCluster} alt='' />
+        <img ref='rock1' className='hidden' src={rock1} alt='' />
+        <img ref='rock2' className='hidden' src={rock2} alt='' />
       </div>
     )
   }

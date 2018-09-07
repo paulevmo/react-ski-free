@@ -39,6 +39,7 @@ class Skier {
   }
 
   moveDown = () => {
+    console.log('this.y: ', this.y)
     this.y = this.y + this.speed
   }
 

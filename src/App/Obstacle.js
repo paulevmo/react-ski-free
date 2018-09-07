@@ -106,6 +106,10 @@ class Obstacle {
       ctx.drawImage(obstacleImage, x, y, obstacleImage.width, obstacleImage.height)
     })
   }
+
+  reset = () => {
+    this.obstacles = []
+  }
 }
 
 export default Obstacle
