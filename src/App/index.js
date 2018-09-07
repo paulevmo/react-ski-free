@@ -150,7 +150,6 @@ class App extends Component {
       }
       return highScores
     }, [])
-    console.log('unsortedScores: ', unsortedScores)
     const highScores = orderBy(unsortedScores, ['score'], ['desc']).slice(0, 10)
     this.setState({ highScores: highScores })
   }
@@ -190,14 +189,16 @@ class App extends Component {
   }
 
   gameLoop = () => {
-    this.ctx.save()
-    this.clearCanvas()
-    this.Skier.move(this.placeNewObstacle, this.addToScore)
-    this.checkIfSkierHitObstacle()
-    this.Skier.draw(this.refs, this.ctx, this.state.width, this.state.height)
-    this.Obstacle.draw(this.refs, this.ctx, this.Skier.x, this.Skier.y, this.state.width, this.state.height)
-    this.ctx.restore()
-    this.animationId = requestAnimationFrame(this.gameLoop)
+    if (this.state.gameStatus === 'PLAYING') {
+      this.ctx.save()
+      this.clearCanvas()
+      this.Skier.move(this.placeNewObstacle, this.addToScore)
+      this.checkIfSkierHitObstacle()
+      this.Skier.draw(this.refs, this.ctx, this.state.width, this.state.height)
+      this.Obstacle.draw(this.refs, this.ctx, this.Skier.x, this.Skier.y, this.state.width, this.state.height)
+      this.ctx.restore()
+      this.animationId = requestAnimationFrame(this.gameLoop)
+    }
   }
 
   render() {
