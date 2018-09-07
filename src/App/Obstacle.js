@@ -11,7 +11,8 @@ class Obstacle {
     'tree',
     'treeCluster',
     'rock1',
-    'rock2'
+    'rock2',
+    'jumpRamp'
   ]
 
   sortObstacles = (refs) => {

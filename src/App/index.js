@@ -15,6 +15,8 @@ import tree from '../img/tree_1.png'
 import treeCluster from '../img/tree_cluster.png'
 import rock1 from '../img/rock_1.png'
 import rock2 from '../img/rock_2.png'
+import jumpRamp from '../img/jump_ramp.png'
+import skierJump from '../img/skier_jump_3.png'
 
 import Skier from './Skier'
 import Obstacle from './Obstacle'
@@ -44,6 +46,8 @@ class App extends Component {
   treeCluster = React.createRef()
   rock1 = React.createRef()
   rock2 = React.createRef()
+  jumpRamp = React.createRef()
+  skierJump = React.createRef()
 
   componentDidMount() {
     this.updateGameDimensions();
@@ -176,8 +180,13 @@ class App extends Component {
     })
 
     if (collision) {
-      cancelAnimationFrame(this.animationId)
-      this.handleCrash()
+      console.log('~~~~~~~~~~~~COLLISION~~~~~~~~~~')
+      if(collision.type === 'jumpRamp') {
+        this.Skier.jump()
+      } else if (this.Skier.direction !== 6) {
+        cancelAnimationFrame(this.animationId)
+        this.handleCrash()
+      }
     }
   }
 
@@ -248,6 +257,8 @@ class App extends Component {
         <img ref='treeCluster' className='hidden' src={treeCluster} alt='' />
         <img ref='rock1' className='hidden' src={rock1} alt='' />
         <img ref='rock2' className='hidden' src={rock2} alt='' />
+        <img ref='jumpRamp' className='hidden' src={jumpRamp} alt='' />
+        <img ref='skierJump' className='hidden' src={skierJump} alt='' />
       </div>
     )
   }

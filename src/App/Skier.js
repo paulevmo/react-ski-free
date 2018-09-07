@@ -4,6 +4,7 @@ class Skier {
     this.x = 0
     this.y = 0
     this.speed = 8
+    this.airTime = null
   }
 
   assets = [
@@ -12,7 +13,8 @@ class Skier {
     'skierLeftDown',
     'skierDown',
     'skierRightDown',
-    'skierRight'
+    'skierRight',
+    'skierJump'
   ]
 
   getAssetName = () => this.assets[this.direction]
@@ -29,6 +31,10 @@ class Skier {
     this.direction = 3
   }
 
+  jump = () => {
+    this.direction = 6
+  }
+
   moveLeft = () => {
     this.x = this.x - this.speed
   }
@@ -39,7 +45,6 @@ class Skier {
   }
 
   moveDown = () => {
-    console.log('this.y: ', this.y)
     this.y = this.y + this.speed
   }
 
@@ -75,6 +80,19 @@ class Skier {
         this.moveDownRight()
         placeNewObstacle()
         addToScore(1)
+        break
+      case 6:
+        this.moveDown()
+        placeNewObstacle()
+        addToScore(3)
+        if (this.airTime === null) {
+          this.airTime = this.speed * 5
+        } else if (this.airTime < 0) {
+          this.airTime = null
+          this.direction = 3
+        } else {
+          this.airTime--
+        }
         break
       default:
         break
