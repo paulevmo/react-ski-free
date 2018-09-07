@@ -18,34 +18,16 @@ import Skier from './Skier'
 import Obstacle from './Obstacle'
 
 import Score from './Score'
-
-const StartButton = styled.button`
-  width: 200px;
-  position: absolute;
-  top: ${(props) => props.windowHeight / 2 - 100}px;
-  left: ${(props) => props.windowWidth / 2 - 100}px;
-  color: #494949;
-  background: #ffffff;
-  padding: 20px;
-  border: 4px solid #494949;
-  border-radius: 6px;
-  display: inline-block;
-
-  &:hover {
-    color: #20bf6b;
-    border-radius: 50px;
-    border-color: #20bf6b;
-    transition: all 0.5s ease 0s;
-    cursor: pointer;
-  }
-`
+import StartMenu from './StartMenu'
+import PostGame from './PostGame'
 
 class App extends Component {
   state = {
     width: null,
     height: null,
-    gameStatus: 'START GAME',
-    score: 0
+    gameStatus: 'NEW',
+    score: 0,
+    playerName: ''
   }
 
   canvasRef = React.createRef()
@@ -94,8 +76,12 @@ class App extends Component {
     this.setState({score: this.state.score + newPoints})
   }
 
+  updatePlayerName = (e) => {
+    this.setState({playerName: e.target.value})
+  }
+
   handleUserInput = (e) => {
-    if (this.state.gameStatus !== 'TRY AGAIN')
+    if (this.state.gameStatus !== 'CRASHED')
     switch (e.which) {
       case 37:
         if(this.Skier.direction === 1) {
@@ -137,6 +123,11 @@ class App extends Component {
     this.Obstacle.placeNew(this.Skier.x, this.Skier.y, this.Skier.direction, this.state.width, this.state.height)
   }
 
+  handleCrash = () => {
+    this.Skier.direction = 0
+    this.setState({ gameStatus: 'CRASHED' })
+  }
+
   checkIfSkierHitObstacle = () => {
     const skierImage = this.refs[this.Skier.getAssetName()]
     const skierRect = {
@@ -158,10 +149,7 @@ class App extends Component {
       return this.intersectRect(skierRect, obstacleRect)
     })
 
-    if (collision) {
-      this.Skier.direction = 0
-      this.setState({ gameStatus: 'TRY AGAIN' })
-    }
+    if (collision) this.handleCrash()
   }
 
   intersectRect = (r1, r2) => {
@@ -188,10 +176,34 @@ class App extends Component {
     return (
       <div className="App">
         {
-          this.state.gameStatus !== 'PLAYING'
-          ? <StartButton windowHeight={canvasHeight} windowWidth={canvasWidth} onClick={this.startGame}>{this.state.gameStatus}</StartButton>
-          : <Score currentScore={this.state.score} />
+          this.state.gameStatus === 'NEW'
+          ? <StartMenu
+              canvasHeight={canvasHeight}
+              canvasWidth={canvasWidth}
+              updatePlayerName={this.updatePlayerName}
+              playerName={this.state.playerName}
+              startGame={this.startGame} />
+            : null
         }
+
+        {
+          this.state.gameStatus === 'PLAYING'
+          ? <Score currentScore={this.state.score} />
+            : null
+        }
+
+        {
+          this.state.gameStatus === 'CRASHED'
+          ? <PostGame
+              canvasHeight={canvasHeight}
+              canvasWidth={canvasWidth}
+              updatePlayerName={this.updatePlayerName}
+              playerName={this.state.playerName}
+              startGame={this.startGame} />
+            : null
+        }
+
+
         <canvas ref={this.canvasRef} width={canvasWidth} height={canvasHeight} />
         <img ref='skierCrash' className='hidden' src={skierCrash} alt='' />
         <img ref='skierLeft' className='hidden' src={skierLeft} alt='' />
