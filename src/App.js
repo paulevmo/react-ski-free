@@ -68,9 +68,8 @@ class App extends Component {
         if(this.skierDirection === 1) {
           this.skierMapX -= this.skierSpeed
           this.placeNewObstacle(this.skierDirection)
-        }
-        else {
-          this.skierDirection--
+        } else {
+          this.skierDirection = Math.max(0, this.skierDirection - 1)
         }
         e.preventDefault()
         break
@@ -80,7 +79,7 @@ class App extends Component {
           this.placeNewObstacle(this.skierDirection)
         }
         else {
-          this.skierDirection++
+          this.skierDirection = Math.min(5, this.skierDirection + 1)
         }
         e.preventDefault()
         break
@@ -153,20 +152,17 @@ class App extends Component {
   drawObstacles = () => {
     console.log('drawingObstacles....')
     console.log('this.obstacles: ', this.obstacles)
-    let newObstacles = this.obstacles.reduce((obstacles, obstacle) => {
+    this.obstacles.forEach((obstacle) => {
       const obstacleImage = this.refs[obstacle.type]
       const x = obstacle.x - this.skierMapX - obstacleImage.width / 2
       const y = obstacle.y - this.skierMapY - obstacleImage.height / 2
 
       if(x < -100 || x > this.state.width + 50 || y < -100 || y > this.state.height + 50) {
-        return obstacles
+        return
       }
 
       this.ctx.drawImage(obstacleImage, x, y, obstacleImage.width, obstacleImage.height)
-      this.obstacles.push(obstacle)
-    }, [])
-
-    this.obstacles = newObstacles
+    })
   }
 
   placeInitialObstacles = () => {
@@ -193,7 +189,8 @@ class App extends Component {
   }
 
   placeNewObstacle = () => {
-    const shouldPlaceObstacle = _.random(1, 8);
+    console.log('placeNewObstacle....')
+    const shouldPlaceObstacle = _.random(1, 8)
     if(shouldPlaceObstacle !== 8) return
 
     const leftEdge = this.skierMapX
@@ -254,6 +251,8 @@ class App extends Component {
 
   checkIfSkierHitObstacle = () => {
     const skierImage = this.refs[this.getSkierAssetName()]
+    console.log('skierImage: ', skierImage, this.getSkierAssetName())
+    if (skierImage === undefined) debugger
     const skierRect = {
       left: this.skierMapX + this.state.width / 2,
       right: this.skierMapX + skierImage.width + this.state.width / 2,
@@ -287,15 +286,12 @@ class App extends Component {
     console.log('---------------')
     console.log('gameLoop....')
     this.ctx.save()
-    // Retina support
-    // this.ctx.scale(window.devicePixelRatio, window.devicePixelRatio)
     this.clearCanvas()
-    // this.moveSkier()
-    // this.checkIfSkierHitObstacle()
+    this.moveSkier()
+    this.checkIfSkierHitObstacle()
     this.drawSkier()
-    // this.drawObstacles()
-    // this.ctx.restore()
-    debugger
+    this.drawObstacles()
+    this.ctx.restore()
     requestAnimationFrame(this.gameLoop)
   }
 
