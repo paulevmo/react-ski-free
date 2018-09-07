@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import { default as _ } from 'lodash'
+import find from 'lodash/find'
 import '../App.css'
+import styled from 'styled-components'
 
 import skierCrash from '../img/skier_crash.png'
 import skierLeft from '../img/skier_left.png'
@@ -13,10 +14,29 @@ import treeCluster from '../img/tree_cluster.png'
 import rock1 from '../img/rock_1.png'
 import rock2 from '../img/rock_2.png'
 
-import Score from './Score'
-
 import Skier from './Skier'
 import Obstacle from './Obstacle'
+
+import Score from './Score'
+
+const StartButton = styled.button`
+  width: 200px;
+  margin-top: ${(props) => props.windowHeight / 2}px;
+  color: #494949;
+  background: #ffffff;
+  padding: 20px;
+  border: 4px solid #494949;
+  border-radius: 6px;
+  display: inline-block;
+
+  &:hover {
+    color: #20bf6b;
+    border-radius: 50px;
+    border-color: #20bf6b;
+    transition: all 0.5s ease 0s;
+    cursor: pointer;
+  }
+`
 
 class App extends Component {
   state = {
@@ -111,7 +131,7 @@ class App extends Component {
       bottom: this.Skier.y + skierImage.height + this.state.height / 2
     }
 
-    const collision = _.find(this.Obstacle.obstacles, (obstacle) => {
+    const collision = find(this.Obstacle.obstacles, (obstacle) => {
       const obstacleImage = this.refs[obstacle.type]
       const obstacleRect = {
         left: obstacle.x,
@@ -151,20 +171,20 @@ class App extends Component {
       <div className="App">
         {
           this.state.gameStatus === 'NEW'
-          ? <button onClick={this.startGame}>Start</button>
+          ? <StartButton windowHeight={canvasHeight} onClick={this.startGame}>START</StartButton>
           : <Score />
         }
         <canvas ref={this.canvasRef} width={canvasWidth} height={canvasHeight} />
-        <img ref='skierCrash' src={skierCrash} />
-        <img ref='skierLeft' src={skierLeft} />
-        <img ref='skierLeftDown' src={skierLeftDown} />
-        <img ref='skierDown' src={skierDown} />
-        <img ref='skierRightDown' src={skierRightDown} />
-        <img ref='skierRight' src={skierRight} />
-        <img ref='tree' src={tree} />
-        <img ref='treeCluster' src={treeCluster} />
-        <img ref='rock1' src={rock1} />
-        <img ref='rock2' src={rock2} />
+        <img ref='skierCrash' src={skierCrash} alt='' />
+        <img ref='skierLeft' src={skierLeft} alt='' />
+        <img ref='skierLeftDown' src={skierLeftDown} alt='' />
+        <img ref='skierDown' src={skierDown} alt='' />
+        <img ref='skierRightDown' src={skierRightDown} alt='' />
+        <img ref='skierRight' src={skierRight} alt='' />
+        <img ref='tree' src={tree} alt='' />
+        <img ref='treeCluster' src={treeCluster} alt='' />
+        <img ref='rock1' src={rock1} alt='' />
+        <img ref='rock2' src={rock2} alt='' />
       </div>
     )
   }

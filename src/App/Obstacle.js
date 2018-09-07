@@ -1,4 +1,6 @@
-import { default as _ } from 'lodash'
+import find from 'lodash/find'
+import sortBy from 'lodash/sortBy'
+import random from 'lodash/random'
 
 class Obstacle {
   constructor () {
@@ -13,14 +15,14 @@ class Obstacle {
   ]
 
   sortObstacles = (refs) => {
-    this.obstacles = _.sortBy(this.obstacles, (obstacle) => {
+    this.obstacles = sortBy(this.obstacles, (obstacle) => {
       const obstacleImage = refs[obstacle.type]
       return obstacle.y + obstacleImage.height
     })
   }
 
   placeInitial = (refs, width, height) => {
-    const numberObstacles = Math.ceil(_.random(5, 7) * (width / 800) * (height / 500))
+    const numberObstacles = Math.ceil(random(5, 7) * (width / 800) * (height / 500))
 
     const minX = -50
     const maxX = width + 50
@@ -64,6 +66,8 @@ class Obstacle {
       case 6: // up
         this.placeRandom(leftEdge, rightEdge, topEdge - 50, topEdge)
         break
+      default:
+        break
     }
   }
 
@@ -82,7 +86,7 @@ class Obstacle {
     const x = Math.floor(Math.random()*(maxX-minX+1)+minX)
     const y = Math.floor(Math.random()*(maxY-minY+1)+minY)
 
-    const foundCollision = _.find(this.obstacles, (obstacle) => {
+    const foundCollision = find(this.obstacles, (obstacle) => {
       return x > (obstacle.x - 50) && x < (obstacle.x + 50) && y > (obstacle.y - 50) && y < (obstacle.y + 50)
     })
 
