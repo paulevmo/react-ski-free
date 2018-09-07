@@ -40,6 +40,7 @@ class StartMenu extends Component {
   }
 
   render () {
+    console.log('render start menu')
     const {startGame, canvasHeight, canvasWidth, status, updatePlayerName, playerName} = this.props
     return (
       <div>

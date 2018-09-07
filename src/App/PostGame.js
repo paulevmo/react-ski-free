@@ -42,7 +42,8 @@ class PostGame extends Component {
   }
 
   render () {
-    const {startGame, canvasHeight, canvasWidth, status, updatePlayerName, playerName} = this.props
+    console.log('render Post game stufff')
+    const {startGame, canvasHeight, canvasWidth, status, updatePlayerName, playerName, highScores} = this.props
     return (
       <div>
         <PlayerName
@@ -62,7 +63,7 @@ class PostGame extends Component {
             </StartButton>
           : null
         }
-        <HighScores canvasWidth={canvasWidth} />
+        <HighScores canvasWidth={canvasWidth} highScores={highScores}/>
       </div>
     )
   }

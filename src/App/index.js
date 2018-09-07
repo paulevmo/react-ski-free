@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import find from 'lodash/find'
+import once from 'lodash/once'
+import orderBy from 'lodash/orderBy'
 import '../App.css'
 import styled from 'styled-components'
 
@@ -125,7 +127,32 @@ class App extends Component {
 
   handleCrash = () => {
     this.Skier.direction = 0
-    this.setState({ gameStatus: 'CRASHED' })
+    this.setState({ gameStatus: 'CRASHED' }, () => cancelAnimationFrame(this.animationId))
+    this.setHighScore()
+  }
+
+  setHighScore = () => {
+    console.log('setting high score...')
+    const timestamp = Math.floor(Date.now() / 1000)
+    localStorage.setItem(`ski-score.${this.state.playerName}.${timestamp}`, this.state.score)
+    this.getHighScores()
+  }
+
+  getHighScores = () => {
+    const unsortedScores = Object.keys(localStorage).reduce((highScores, key) => {
+      const splitKey = key.split('.')
+      if (splitKey[0] === 'ski-score') {
+        const score = localStorage.getItem(key)
+          highScores.push({
+            name: splitKey[1],
+            score: Number(score)
+          })
+      }
+      return highScores
+    }, [])
+    console.log('unsortedScores: ', unsortedScores)
+    const highScores = orderBy(unsortedScores, ['score'], ['desc']).slice(0, 10)
+    this.setState({ highScores: highScores })
   }
 
   checkIfSkierHitObstacle = () => {
@@ -149,7 +176,10 @@ class App extends Component {
       return this.intersectRect(skierRect, obstacleRect)
     })
 
-    if (collision) this.handleCrash()
+    if (collision) {
+      cancelAnimationFrame(this.animationId)
+      this.handleCrash()
+    }
   }
 
   intersectRect = (r1, r2) => {
@@ -171,6 +201,7 @@ class App extends Component {
   }
 
   render() {
+    console.log('Render index.....')
     const canvasWidth = this.state.width
     const canvasHeight = this.state.height
     return (
@@ -199,7 +230,8 @@ class App extends Component {
               canvasWidth={canvasWidth}
               updatePlayerName={this.updatePlayerName}
               playerName={this.state.playerName}
-              startGame={this.startGame} />
+              startGame={this.startGame}
+              highScores={this.state.highScores} />
             : null
         }
 

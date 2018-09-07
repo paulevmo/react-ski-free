@@ -17,11 +17,33 @@ const LeaderBoardHeader = styled.h2`
   text-decoration: underline;
 `
 
+const LeaderBoardList = styled.ul`
+  list-style: none;
+  padding: 0;
+`
+
+const LeaderBoardItem = styled.li`
+  margin: 10px 0;
+
+  &:first-child {
+    font-weight: bold;
+  }
+`
+
 class HighScores extends Component {
   render () {
+    console.log('render high score lsdjflskjdfl')
     return (
       <HighScoreBoard>
         <LeaderBoardHeader>Leader Board</LeaderBoardHeader>
+        <LeaderBoardList>
+          {
+            this.props.highScores &&
+            this.props.highScores.map((score, i) => (
+              <LeaderBoardItem key={`score-${i}`}>{score.name} - {score.score}</LeaderBoardItem>
+            ))
+          }
+        </LeaderBoardList>
       </HighScoreBoard>
     )
   }
