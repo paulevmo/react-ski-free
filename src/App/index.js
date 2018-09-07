@@ -42,7 +42,8 @@ class App extends Component {
   state = {
     width: null,
     height: null,
-    gameStatus: 'NEW'
+    gameStatus: 'NEW',
+    score: 0
   }
 
   canvasRef = React.createRef()
@@ -78,6 +79,12 @@ class App extends Component {
     this.Obstacle.placeInitial(this.refs, this.state.width, this.state.height)
     requestAnimationFrame(this.gameLoop)
     this.setState({ gameStatus: 'PLAYING' })
+  }
+
+  addToScore = (newPoints) => {
+    console.log('adding to score.... newPoints: ', newPoints)
+    console.log(this.state.score + newPoints)
+    this.setState({score: this.state.score + newPoints})
   }
 
   handleUserInput = (e) => {
@@ -156,7 +163,7 @@ class App extends Component {
   gameLoop = () => {
     this.ctx.save()
     this.clearCanvas()
-    this.Skier.move(this.placeNewObstacle)
+    this.Skier.move(this.placeNewObstacle, this.addToScore)
     this.checkIfSkierHitObstacle()
     this.Skier.draw(this.refs, this.ctx, this.state.width, this.state.height)
     this.Obstacle.draw(this.refs, this.ctx, this.Skier.x, this.Skier.y, this.state.width, this.state.height)
@@ -172,7 +179,7 @@ class App extends Component {
         {
           this.state.gameStatus === 'NEW'
           ? <StartButton windowHeight={canvasHeight} onClick={this.startGame}>START</StartButton>
-          : <Score />
+          : <Score currentScore={this.state.score} />
         }
         <canvas ref={this.canvasRef} width={canvasWidth} height={canvasHeight} />
         <img ref='skierCrash' src={skierCrash} alt='' />

@@ -58,19 +58,22 @@ class Skier {
     ctx.drawImage(skierImage, x, y, skierImage.width, skierImage.height)
   }
 
-  move = (placeNewObstacle) => {
+  move = (placeNewObstacle, addToScore) => {
     switch(this.direction) {
       case 2:
         this.moveDownLeft()
         placeNewObstacle()
+        addToScore(1)
         break
       case 3:
         this.moveDown()
         placeNewObstacle()
+        addToScore(1)
         break
       case 4:
         this.moveDownRight()
         placeNewObstacle()
+        addToScore(1)
         break
       default:
         break
