@@ -46,8 +46,7 @@ class StartMenu extends Component {
   }
 
   render () {
-    console.log('render start menu')
-    const {startGame, canvasHeight, canvasWidth, status, updatePlayerName, playerName} = this.props
+    const {startGame, canvasHeight, canvasWidth, updatePlayerName, playerName} = this.props
     return (
       <div>
         <StartIcon src={skierStartIcon} alt='' />

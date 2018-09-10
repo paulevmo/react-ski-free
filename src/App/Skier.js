@@ -47,7 +47,6 @@ class Skier {
   }
 
   moveDown = () => {
-    console.log('moving down....')
     this.y = this.y + (this.speed * this.speedMultiplier)
   }
 

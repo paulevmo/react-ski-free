@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
 import find from 'lodash/find'
-import once from 'lodash/once'
 import orderBy from 'lodash/orderBy'
 import '../App.css'
-import styled from 'styled-components'
 
 import skierCrash from '../img/skier_crash.png'
 import skierLeft from '../img/skier_left.png'
@@ -35,7 +33,6 @@ class App extends Component {
   }
 
   canvasRef = React.createRef()
-
   skierCrash = React.createRef()
   skierLeft = React.createRef()
   skierLeftDown = React.createRef()
@@ -137,7 +134,6 @@ class App extends Component {
   }
 
   setHighScore = () => {
-    console.log('setting high score...')
     const timestamp = Math.floor(Date.now() / 1000)
     localStorage.setItem(`ski-score.${this.state.playerName}.${timestamp}`, this.state.score)
     this.getHighScores()
@@ -211,7 +207,6 @@ class App extends Component {
   }
 
   render() {
-    console.log('Render index.....')
     const canvasWidth = this.state.width
     const canvasHeight = this.state.height
     return (
@@ -238,10 +233,10 @@ class App extends Component {
           ? <PostGame
               canvasHeight={canvasHeight}
               canvasWidth={canvasWidth}
+              startGame={this.startGame}
               updatePlayerName={this.updatePlayerName}
               playerName={this.state.playerName}
               currentScore={this.state.score}
-              startGame={this.startGame}
               highScores={this.state.highScores} />
             : null
         }

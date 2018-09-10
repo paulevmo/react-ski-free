@@ -31,7 +31,6 @@ const LeaderBoardItem = styled.li`
 
 class HighScores extends Component {
   render () {
-    console.log('render high score lsdjflskjdfl')
     return (
       <HighScoreBoard>
         <LeaderBoardHeader>Leader Board</LeaderBoardHeader>
