@@ -1,6 +1,7 @@
 # React Ski Game
 
 To run locally: `npm start`
+Or visit this url: 
 
 About the game:
 - To avoid crashing navigate around trees and rocks
