@@ -25,9 +25,8 @@ const LeaderBoardList = styled.ul`
 const LeaderBoardItem = styled.li`
   margin: 10px 0;
 
-  &:first-child {
-    font-weight: bold;
-  }
+  font-weight: ${(props) => props.score === props.currentScore ? 'bold' : 'normal'}
+  top: ${(props) => props.canvasHeight / 2 - 150}px;
 `
 
 class HighScores extends Component {
@@ -40,7 +39,12 @@ class HighScores extends Component {
           {
             this.props.highScores &&
             this.props.highScores.map((score, i) => (
-              <LeaderBoardItem key={`score-${i}`}>{score.name} - {score.score}</LeaderBoardItem>
+              <LeaderBoardItem
+                key={`score-${i}`}
+                currentScore={this.props.currentScore}
+                score={score.score} >
+                {score.name} - {score.score}
+              </LeaderBoardItem>
             ))
           }
         </LeaderBoardList>

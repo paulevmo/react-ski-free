@@ -87,33 +87,34 @@ class App extends Component {
   }
 
   handleUserInput = (e) => {
-    if (this.state.gameStatus !== 'CRASHED')
-    switch (e.which) {
-      case 37:
-        if(this.Skier.direction === 1) {
-          this.Skier.moveLeft()
-          this.placeNewObstacle()
-        } else {
-          this.Skier.turnLeft()
-        }
-        e.preventDefault()
-        break
-      case 39:
-        if(this.Skier.direction === 5) {
-          this.Skier.moveRight()
-          this.placeNewObstacle()
-        }
-        else {
-          this.Skier.turnRight()
-        }
-        e.preventDefault()
-        break
-      case 40:
-        this.Skier.turnDown()
-        e.preventDefault()
-        break
-      default:
-        break
+    if (this.state.gameStatus !== 'CRASHED' && this.Skier.direction !== 6) {
+      switch (e.which) {
+        case 37:
+          if(this.Skier.direction === 1) {
+            this.Skier.moveLeft()
+            this.placeNewObstacle()
+          } else {
+            this.Skier.turnLeft()
+          }
+          e.preventDefault()
+          break
+        case 39:
+          if(this.Skier.direction === 5) {
+            this.Skier.moveRight()
+            this.placeNewObstacle()
+          }
+          else {
+            this.Skier.turnRight()
+          }
+          e.preventDefault()
+          break
+        case 40:
+          this.Skier.turnDown()
+          e.preventDefault()
+          break
+        default:
+          break
+      }
     }
   }
 
@@ -240,6 +241,7 @@ class App extends Component {
               canvasWidth={canvasWidth}
               updatePlayerName={this.updatePlayerName}
               playerName={this.state.playerName}
+              currentScore={this.state.score}
               startGame={this.startGame}
               highScores={this.state.highScores} />
             : null

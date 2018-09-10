@@ -36,7 +36,7 @@ class Skier {
   }
 
   moveLeft = () => {
-    this.x = this.x - this.speed
+    this.x = this.x - Math.ceil(Math.sqrt(this.speed))
   }
 
   moveDownLeft = () => {
@@ -45,6 +45,7 @@ class Skier {
   }
 
   moveDown = () => {
+    console.log('moving down....')
     this.y = this.y + this.speed
   }
 
@@ -54,7 +55,7 @@ class Skier {
   }
 
   moveRight = () => {
-    this.x = this.x + this.speed
+    this.x = this.x + Math.ceil(Math.sqrt(this.speed))
   }
 
   draw = (refs, ctx, width, height) => {
@@ -66,6 +67,10 @@ class Skier {
 
   move = (placeNewObstacle, addToScore) => {
     switch(this.direction) {
+      case 1:
+        this.moveLeft()
+        placeNewObstacle()
+        break
       case 2:
         this.moveDownLeft()
         placeNewObstacle()
@@ -81,12 +86,16 @@ class Skier {
         placeNewObstacle()
         addToScore(1)
         break
+      case 5:
+        this.moveRight()
+        placeNewObstacle()
+        break
       case 6:
         this.moveDown()
         placeNewObstacle()
         addToScore(3)
         if (this.airTime === null) {
-          this.airTime = this.speed * 5
+          this.airTime = this.speed * 8
         } else if (this.airTime < 0) {
           this.airTime = null
           this.direction = 3

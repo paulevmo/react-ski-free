@@ -36,6 +36,12 @@ const PlayerName = styled.input`
   box-sizing: border-box;
 `
 
+const PostGameScore = styled.h2`
+  position: absolute;
+  left: ${(props) => props.canvasWidth / 2 - 60}px;
+  top: ${(props) => props.canvasHeight / 5}px;
+`
+
 class PostGame extends Component {
   state = {
     playerName: ''
@@ -46,6 +52,11 @@ class PostGame extends Component {
     const {startGame, canvasHeight, canvasWidth, status, updatePlayerName, playerName, highScores} = this.props
     return (
       <div>
+        <PostGameScore
+          canvasHeight={canvasHeight}
+          canvasWidth={canvasWidth}>
+          Score: {this.props.currentScore}
+        </PostGameScore>
         <PlayerName
           value={playerName}
           onChange={updatePlayerName}
@@ -63,7 +74,11 @@ class PostGame extends Component {
             </StartButton>
           : null
         }
-        <HighScores canvasWidth={canvasWidth} highScores={highScores}/>
+        <HighScores
+          canvasWidth={canvasWidth}
+          highScores={highScores}
+          currentScore={this.props.currentScore}
+        />
       </div>
     )
   }
