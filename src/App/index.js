@@ -113,6 +113,11 @@ class App extends Component {
           break
       }
     }
+    if (this.state.gameStatus !== 'PLAYING' && this.state.playerName) {
+      if (e.which === 13) {
+        this.startGame()
+      }
+    }
   }
 
   updateGameDimensions = () => {
