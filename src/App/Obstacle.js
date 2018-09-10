@@ -5,6 +5,8 @@ import random from 'lodash/random'
 class Obstacle {
   constructor () {
     this.obstacles = []
+    this.difficultyThreshold = 500
+    this.obstaclePlacementFactor = 8
   }
 
   obstacleTypes = [
@@ -37,9 +39,13 @@ class Obstacle {
     this.sortObstacles(refs)
   }
 
-  placeNew = (skierX, skierY, skierDirection, width, height) => {
-    const shouldPlaceObstacle = Math.floor(Math.random() * 8) + 1
-    if(shouldPlaceObstacle !== 8) return
+  placeNew = (skierX, skierY, skierDirection, width, height, currentScore) => {
+    if (currentScore > this.difficultyThreshold) {
+      this.difficultyThreshold += 500
+      this.obstaclePlacementFactor = Math.max(2, this.obstaclePlacementFactor - 1)
+    }
+    const shouldPlaceObstacle = Math.floor(Math.random() * this.obstaclePlacementFactor) + 1
+    if(shouldPlaceObstacle !== this.obstaclePlacementFactor) return
 
     const leftEdge = skierX
     const rightEdge = skierX + width
@@ -63,9 +69,6 @@ class Obstacle {
         break
       case 5: // right
         this.placeRandom(rightEdge, rightEdge + 50, topEdge, bottomEdge)
-        break
-      case 6: // up
-        this.placeRandom(leftEdge, rightEdge, topEdge - 50, topEdge)
         break
       default:
         break

@@ -1,5 +1,11 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
+import skierStartIcon from '../img/skier_jump_5.png'
+
+const StartIcon = styled.img`
+  width: 150px;
+  margin-top: 50px;
+`
 
 const StartButton = styled.button`
   width: 200px;
@@ -44,6 +50,7 @@ class StartMenu extends Component {
     const {startGame, canvasHeight, canvasWidth, status, updatePlayerName, playerName} = this.props
     return (
       <div>
+        <StartIcon src={skierStartIcon} alt='' />
         <PlayerName
           value={playerName}
           onChange={updatePlayerName}

@@ -127,7 +127,7 @@ class App extends Component {
   }
 
   placeNewObstacle = () => {
-    this.Obstacle.placeNew(this.Skier.x, this.Skier.y, this.Skier.direction, this.state.width, this.state.height)
+    this.Obstacle.placeNew(this.Skier.x, this.Skier.y, this.Skier.direction, this.state.width, this.state.height, this.state.score)
   }
 
   handleCrash = () => {
@@ -181,7 +181,6 @@ class App extends Component {
     })
 
     if (collision) {
-      console.log('~~~~~~~~~~~~COLLISION~~~~~~~~~~')
       if(collision.type === 'jumpRamp') {
         this.Skier.jump()
       } else if (this.Skier.direction !== 6) {
@@ -202,10 +201,10 @@ class App extends Component {
     if (this.state.gameStatus === 'PLAYING') {
       this.ctx.save()
       this.clearCanvas()
-      this.Skier.move(this.placeNewObstacle, this.addToScore)
+      this.Skier.move(this.placeNewObstacle, this.addToScore, this.state.score)
       this.checkIfSkierHitObstacle()
       this.Skier.draw(this.refs, this.ctx, this.state.width, this.state.height)
-      this.Obstacle.draw(this.refs, this.ctx, this.Skier.x, this.Skier.y, this.state.width, this.state.height)
+      this.Obstacle.draw(this.refs, this.ctx, this.Skier.x, this.Skier.y, this.state.width, this.state.height, this.state.score)
       this.ctx.restore()
       this.animationId = requestAnimationFrame(this.gameLoop)
     }

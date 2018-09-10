@@ -4,6 +4,8 @@ class Skier {
     this.x = 0
     this.y = 0
     this.speed = 8
+    this.speedMultiplier = 1
+    this.difficultyThreshold = 500
     this.airTime = null
   }
 
@@ -36,26 +38,26 @@ class Skier {
   }
 
   moveLeft = () => {
-    this.x = this.x - Math.ceil(Math.sqrt(this.speed))
+    this.x = this.x - Math.ceil(Math.sqrt((this.speed * this.speedMultiplier)))
   }
 
   moveDownLeft = () => {
-    this.x = this.x - Math.round(this.speed / 1.4142)
-    this.y = this.y + Math.round(this.speed / 1.4142)
+    this.x = this.x - Math.round((this.speed * this.speedMultiplier) / 1.4142)
+    this.y = this.y + Math.round((this.speed * this.speedMultiplier) / 1.4142)
   }
 
   moveDown = () => {
     console.log('moving down....')
-    this.y = this.y + this.speed
+    this.y = this.y + (this.speed * this.speedMultiplier)
   }
 
   moveDownRight = () => {
-    this.x = this.x + Math.round(this.speed / 1.4142)
-    this.y = this.y + Math.round(this.speed / 1.4142)
+    this.x = this.x + Math.round((this.speed * this.speedMultiplier) / 1.4142)
+    this.y = this.y + Math.round((this.speed * this.speedMultiplier) / 1.4142)
   }
 
   moveRight = () => {
-    this.x = this.x + Math.ceil(Math.sqrt(this.speed))
+    this.x = this.x + Math.ceil(Math.sqrt((this.speed * this.speedMultiplier)))
   }
 
   draw = (refs, ctx, width, height) => {
@@ -65,7 +67,11 @@ class Skier {
     ctx.drawImage(skierImage, x, y, skierImage.width, skierImage.height)
   }
 
-  move = (placeNewObstacle, addToScore) => {
+  move = (placeNewObstacle, addToScore, currentScore) => {
+    if (currentScore > this.difficultyThreshold) {
+      this.speedMultiplier += 0.1
+      this.difficultyThreshold += 500
+    }
     switch(this.direction) {
       case 1:
         this.moveLeft()
@@ -95,7 +101,7 @@ class Skier {
         placeNewObstacle()
         addToScore(3)
         if (this.airTime === null) {
-          this.airTime = this.speed * 8
+          this.airTime = (this.speed * this.speedMultiplier) * 8
         } else if (this.airTime < 0) {
           this.airTime = null
           this.direction = 3
